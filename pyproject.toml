@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "redmagic-cooler-ble"
+version = "0.1.0"
+description = "BLE tools for RedMagic / Nubia magnetic phone coolers."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Reverse engineering contributors" }
+]
+keywords = ["ble", "bluetooth", "redmagic", "nubia", "cooler"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: System :: Hardware",
+  "Typing :: Typed",
+]
+dependencies = [
+  "bleak>=0.22",
+]
+
+[project.scripts]
+redmagic-cooler = "redmagic_cooler_ble.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/redmagic_cooler_ble"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src",
+  "/tests",
+  "/docs",
+  "/examples",
+  "/README.md",
+  "/LICENSE",
+  "/requirements.txt",
+  "/cooler_test.py",
+]
