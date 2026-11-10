@@ -219,6 +219,48 @@ Run the terminal telemetry/fan slider:
 redmagic-cooler terminal --device "RM Magcooler"
 ```
 
+Run a conservative Mac thermal controller:
+
+```sh
+redmagic-cooler mac-auto --device "RM Magcooler"
+```
+
+The controller starts and exits at fan level 1, disables Diablo mode, caps the
+default fan target at level 4, and forces level 1 when cooler telemetry reaches
+the configured cold floor. On macOS, the built-in sampler reads actual CPU/GPU
+temperature and Mac fan RPM from AppleSMC, falling back to macOS thermal state
+and battery temperature if SMC access is unavailable. You can also pass a local
+command that prints JSON:
+
+```sh
+redmagic-cooler mac-auto --sensor-command 'my-sensors --json'
+```
+
+Expected JSON keys are `cpu_temperature_c`, `gpu_temperature_c`,
+`temperature_c`, `fan_rpm`, `fan_rpms`, and/or `thermal_state`.
+
+Run a local dashboard with live CPU/GPU temperatures, Mac fan RPM, cooler
+telemetry, manual fan controls, and curve controls:
+
+```sh
+redmagic-cooler control-ui --device "RM Magcooler" --open
+```
+
+The dashboard also shows Mac input power from IOKit, the cooler's reported
+power draw, rolling 60-second averages, and a by-level table. To measure whether
+the cooler is helping under a steady workload, keep the workload constant and
+compare a short manual-level window against another level in that table.
+
+On 2026-07-08, a live A/B test under sustained load compared high cooling
+against the cooler effectively off. With the cooler active, it drew about `26 W`
+and ran near `5000 RPM`; with the thermal switch off, it reported about `1 W`
+and `0 RPM`. After also sending light off, a passive watch saw no fresh RPM or
+power telemetry frames. CPU and GPU temperatures changed by roughly `1 C` or
+less on average, and macOS reported no thermal or performance warnings in either
+condition. In this attachment/setup, the measurable Mac CPU/GPU benefit was
+negligible to very small despite the cooler physically chilling its own/contact
+surface.
+
 The old prototype wrapper remains for compatibility:
 
 ```sh
